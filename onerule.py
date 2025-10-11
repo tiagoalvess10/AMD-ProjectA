@@ -39,48 +39,40 @@ def one_rule(dataset):
    best_rules = None
 
    for variable in variable_list:
-      # Cria a tabela de frequências
-      freq_table = {}
+      frequency = {}
       for value in variable.values:
-         freq_table[value] = {class_value: 0 for class_value in class_var.values}
+         for class_value in class_var.values:
+            frequency[value, class_value] = 0
 
-      # Conta as ocorrências
-      for instance in dataset:
-         var_value = str(instance[variable])  # <-- converte para string
-         class_value = str(instance[class_var])  # <-- converte para string
-         if var_value not in freq_table:
-               freq_table[var_value] = {class_value: 0 for class_value in class_var.values}
-         freq_table[var_value][class_value] += 1
+      for data in dataset:
+         var_value = str(data[variable])
+         class_value = str(data[class_var])
+         frequency[var_value, class_value] += 1
 
-      # Determina a classe mais frequente por valor da variável
       rules = {}
-      for value, counts in freq_table.items():
-         most_frequent_class = max(counts, key=counts.get)
-         rules[value] = most_frequent_class
+      for(value, class_value), count in frequency.items():
+         if value not in rules or count > frequency[value, rules[value]]:
+            rules[value] = class_value
 
-      # Calcula a acurácia
       correct_predictions = 0
-      for instance in dataset:
-         var_value = str(instance[variable])
+      for data in dataset:
+         var_value = str(data[variable])
          predicted_class = rules.get(var_value)
-         actual_class = str(instance[class_var])
+         actual_class = str(data[class_var])
          if predicted_class == actual_class:
-               correct_predictions += 1
+            correct_predictions += 1
 
       accuracy = correct_predictions / N
       print(f"Variable: {variable.name}, Accuracy: {accuracy:.2f}")
 
-      # Guarda a melhor variável
       if accuracy > best_accuracy:
          best_accuracy = accuracy
          best_variable = variable
          best_rules = rules
-
+      
    print("\nBest variable:", best_variable.name)
    print("Accuracy:", f"{best_accuracy:.2f}")
    print("Rules:", best_rules)
-
-
 
 #_______________________________________________________________________________
 # read a "dataset"
