@@ -1,0 +1,14 @@
+--==============
+-- DB connection
+--==============
+\set dataBase db_operational
+;
+\set userName postgres
+;
+\connect :dataBase :userName
+;
+--==========================
+--==========================
+
+COPY (SELECT * FROM amd_PA.lenses_dataset) TO 'C:/AMD/lenses.dataset.txt' DELIMITER '	' CSV HEADER
+;

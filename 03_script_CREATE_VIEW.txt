@@ -1,0 +1,54 @@
+CREATE OR REPLACE VIEW amd_PA.lenses_class(my_order, age, prescription, astigmatic, tear_rate, lenses) AS
+SELECT 
+	1 as my_order, 
+	'' as age, 
+	'' as prescription, 
+	'' as astigmatic, 
+	'' as tear_rate, 
+	'class' as lenses
+;
+
+CREATE OR REPLACE VIEW amd_PA.lenses_domain(my_order, age, prescription, astigmatic, tear_rate, lenses) as
+SELECT
+	0 as my_order,
+    'discrete' as age,
+    'discrete' as prescription,
+    'discrete' as astigmatic,
+	'discrete' as tear_rate,
+    'discrete' as lenses
+;
+
+
+
+CREATE OR REPLACE VIEW amd_PA.lenses_view(my_order, age, prescription, astigmatic, tear_rate, lenses) AS
+SELECT 
+	2 as my_order,
+    app.age,
+    pd.diseaseName AS prescription,
+    CASE WHEN app.astigmatic THEN 'yes' ELSE 'no' END AS astigmatic,
+    app.tear_rate,
+    app.lenses
+FROM amd_PA.APPOINTMENT app
+JOIN amd_PA.PATIENT_DISEASE pd ON app.patient_nif = pd.patient_nif;
+
+
+CREATE OR REPLACE VIEW amd_PA.lenses_dataset (age, prescription, astigmatic, tear_rate, lenses) as
+	SELECT age, prescription, astigmatic, tear_rate, lenses
+	FROM (
+		SELECT my_order, age, prescription, astigmatic, tear_rate, lenses
+		FROM amd_PA.lenses_domain
+
+		UNION ALL
+
+		SELECT my_order, age, prescription, astigmatic, tear_rate, lenses
+		FROM amd_PA.lenses_class
+
+		UNION ALL
+
+		SELECT my_order, age, prescription, astigmatic, tear_rate, lenses
+		FROM amd_PA.lenses_view
+	) as combined
+	order by my_order asc;
+;
+
+select * from amd_PA.lenses_dataset;
