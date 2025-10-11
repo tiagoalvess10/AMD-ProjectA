@@ -26,18 +26,73 @@ import sys
 from u01_util import my_print
 import Orange as DM
 
+"""
+Algorithm: One Rule (OneR) manual implementation
+"""
+def one_rule(dataset):
+   variable_list = dataset.domain.attributes 
+   class_var = dataset.domain.class_var 
+   N = len(dataset)
+
+   best_accuracy = 0.0
+   best_variable = None
+   best_rules = None
+
+   for variable in variable_list:
+      # Cria a tabela de frequências
+      freq_table = {}
+      for value in variable.values:
+         freq_table[value] = {class_value: 0 for class_value in class_var.values}
+
+      # Conta as ocorrências
+      for instance in dataset:
+         var_value = str(instance[variable])  # <-- converte para string
+         class_value = str(instance[class_var])  # <-- converte para string
+         if var_value not in freq_table:
+               freq_table[var_value] = {class_value: 0 for class_value in class_var.values}
+         freq_table[var_value][class_value] += 1
+
+      # Determina a classe mais frequente por valor da variável
+      rules = {}
+      for value, counts in freq_table.items():
+         most_frequent_class = max(counts, key=counts.get)
+         rules[value] = most_frequent_class
+
+      # Calcula a acurácia
+      correct_predictions = 0
+      for instance in dataset:
+         var_value = str(instance[variable])
+         predicted_class = rules.get(var_value)
+         actual_class = str(instance[class_var])
+         if predicted_class == actual_class:
+               correct_predictions += 1
+
+      accuracy = correct_predictions / N
+      print(f"Variable: {variable.name}, Accuracy: {accuracy:.2f}")
+
+      # Guarda a melhor variável
+      if accuracy > best_accuracy:
+         best_accuracy = accuracy
+         best_variable = variable
+         best_rules = rules
+
+   print("\nBest variable:", best_variable.name)
+   print("Accuracy:", f"{best_accuracy:.2f}")
+   print("Rules:", best_rules)
+
 
 
 #_______________________________________________________________________________
 # read a "dataset"
 # the file name (that can be passed in the command line)
-fileName = "./_dataset/lenses.tab"
+fileName = "./_dataset/d01_lenses.tab"
 #fileName = "./_dataset/adult_sample"
 if len( sys.argv ) > 1: fileName = sys.argv[ 1 ]
 
 try:
    dataset = DM.data.Table( fileName )
-   #print( dataset )
+   one_rule(dataset)
+   print( dataset )
    #print (dataset.domain)
    #print (dataset.domain.variables)
    #print (dataset.domain.attributes)
@@ -45,23 +100,23 @@ try:
    #print (dataset.domain.class_var)
    #print (dir(dataset.domain.class_var))
    
-except:
-   my_print( "--->>> error - can not open the file: %s" % fileName )
+except Exception as e:
+   my_print(f"--->>> error - cannot open the file: {fileName}\n{e}")
    exit()
 
 
-
+"""
 #_______________________________________________________________________________
 # variables: name (type = discrete | continuous): [value1, value2, ...]
 # variables, in Orange, refer to features or class
 # cf., http://docs.orange.biolab.si/3/data-mining-library/tutorial/data.html#exploration-of-the-data-domain
-#variable_list = dataset.domain.variables
-#variable_list = dataset.domain.attributes
+variable_list = dataset.domain.variables
+variable_list = dataset.domain.attributes
 
 my_print( aStr = ">> %d Variables (attributes+class) <<" % len( variable_list ) )
 print( ">> name (type): (value1, value2, ...) <<" )
 
-nDisc=0; nCont=0; nStr=0;
+nDisc=0; nCont=0; nStr=0
 for variable in variable_list:
    print( ":: %s %s" % ( variable.name, variable.TYPE_HEADERS ), end="" ),
    if variable.is_discrete:
@@ -89,9 +144,8 @@ print( ":: %s %s: %s " % ( the_class.name,
 
 #_______________________________________________________________________________
 # First N Instances
-N = 20
+N = 8
 my_print( "First %d instances:" % N )
 for i in range( N ): print( dataset[ i ] )
 
-
-
+"""
