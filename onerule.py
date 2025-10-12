@@ -50,19 +50,30 @@ def one_rule(dataset):
          frequency[var_value, class_value] += 1
 
       rules = {}
-      for(value, class_value), count in frequency.items():
-         if value not in rules or count > frequency[value, rules[value]]:
-            rules[value] = class_value
+      for value in variable.values:
+         max_count = 0
+         best_class = None
+         for class_value in class_var.values:
+            if best_class is None:
+               best_class = class_value
+            else:
+               count = frequency[value, class_value]
+               if count > max_count:
+                  max_count = count
+                  best_class = class_value
 
-      correct_predictions = 0
+         rules[value] = best_class
+            
+
+      n_predictions = 0
       for data in dataset:
          var_value = str(data[variable])
          predicted_class = rules.get(var_value)
          actual_class = str(data[class_var])
          if predicted_class == actual_class:
-            correct_predictions += 1
+            n_predictions += 1
 
-      accuracy = correct_predictions / N
+      accuracy = n_predictions / N
       print(f"Variable: {variable.name}, Accuracy: {accuracy:.2f}")
 
       if accuracy > best_accuracy:
@@ -84,7 +95,7 @@ if len( sys.argv ) > 1: fileName = sys.argv[ 1 ]
 try:
    dataset = DM.data.Table( fileName )
    one_rule(dataset)
-   print( dataset )
+   #print( dataset )
    #print (dataset.domain)
    #print (dataset.domain.variables)
    #print (dataset.domain.attributes)
