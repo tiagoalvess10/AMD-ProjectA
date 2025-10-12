@@ -54,6 +54,7 @@ def one_rule(dataset):
 
    best_accuracy = 0.0                             # variavel para guardar a melhor accuracy, que é utilizada no final 
    best_variable = None                            # variavel para guardar a melhor variável, que é utilizada no final  
+   best_rules = None
 
    for variable in variable_list:
       frequency = {}
@@ -97,9 +98,35 @@ def one_rule(dataset):
       if accuracy > best_accuracy:
          best_accuracy = accuracy
          best_variable = variable
+         best_rules = c_rules
+         
       
    print("\nBest variable:", best_variable.name)
    print("Accuracy:", f"{best_accuracy:.2f}")
+   print("Rules:", best_rules)
+
+   return best_variable, best_rules
+
+"""
+Tendo
+"""
+def create_new_patient(dataset):
+   new_patient = {}
+   variable_list = dataset.domain.attributes
+   for variable in variable_list:
+      value = input(f"Enter value for {variable.name} {variable.values}: ")
+      while value not in variable.values:
+         print("Invalid value. Please try again.")
+         value = input(f"Enter value for {variable.name} {variable.values}: ")
+      new_patient[variable.name] = value
+
+   return new_patient
+
+   
+def prevision(new_patient, best_variable, best_rules):
+   var_value = new_patient.get(best_variable.name)
+   predicted_class = best_rules.get(var_value)
+   print(f"O diagnostico do cliente e: {predicted_class}")
    
 #_______________________________________________________________________________
 # read a "dataset"
@@ -112,7 +139,15 @@ try:
    dataset = DM.data.Table( fileName )
    print(dataset)
    print("\n")
-   one_rule(dataset)
+   best_variable, best_rules = one_rule(dataset)
+   print("\n")
+   response = input("Deseja prever o diagnostico de um novo paciente? (yes/no)")
+   if response.lower() == 'yes':
+      new_patient = create_new_patient(dataset)
+      prevision(new_patient, best_variable, best_rules)
+   else:
+      print("Ending...")
+
    #print (dataset.domain)
    #print (dataset.domain.variables)
    #print (dataset.domain.attributes)
