@@ -28,15 +28,32 @@ import Orange as DM
 
 """
 Algorithm: One Rule (OneR) manual implementation
+Recebe, como parâmetro, um dataset
+
+Primeiro percorre todas as variáveis (atributos) do dataset e, para cada varivel, constroi um dicionrio de frequncias,
+para contar as ocorrências de cada valor da varivel em relação a cada valor da classe.
+No inicio, esse dicionário é inicializado com 0 para todas as combinações possíveis de valores da varivel e da classe.
+
+Depois, percorre todas as instâncias do dataset, atualizando o dicionário de frequências com as contagens reais.
+
+Em seguida, para cada valor da varivel, determina a classe mais frequente associada a esse valor, construindo assim as regras de classificação.
+
+Após isso, conta o numero de previsões corretas feitas pelas regras construídas, utilizando o correctPredict.
+
+Após contar em quantos casos a varivel previu corretamente a classe, calcula a accuracy, isto é, 
+a proporção de previsões corretas em relação ao número total de instâncias.
+
+Por fim, compara a accuracy obtida com a melhor accuracy encontrada até o momento.
+Se a accuracy atual for maior, atualiza a melhor accuracy e armazena a varivel correspondente.
+Assim, teremos a varivel que melhor classifica o dataset com base na accuracy. Essas informações são apresentadas no final.
 """
 def one_rule(dataset):
-   variable_list = dataset.domain.attributes 
-   class_var = dataset.domain.class_var 
-   N = len(dataset)
+   variable_list = dataset.domain.attributes       # attributes para que exclua a class, se fosse varibles incluiria a class
+   class_var = dataset.domain.class_var            # a variável classe
+   N = len(dataset)                                # tamanho do dataset
 
-   best_accuracy = 0.0
-   best_variable = None
-   best_rules = None
+   best_accuracy = 0.0                             # variavel para guardar a melhor accuracy, que é utilizada no final 
+   best_variable = None                            # variavel para guardar a melhor variável, que é utilizada no final  
 
    for variable in variable_list:
       frequency = {}
@@ -49,42 +66,41 @@ def one_rule(dataset):
          class_value = str(data[class_var])
          frequency[var_value, class_value] += 1
 
-      rules = {}
+      c_rules = {}
       for value in variable.values:
          max_count = 0
          best_class = None
          for class_value in class_var.values:
-            if best_class is None:
+            if best_class is None:                 # primeira vez
                best_class = class_value
+               max_count = frequency[value, class_value]
             else:
                count = frequency[value, class_value]
                if count > max_count:
                   max_count = count
                   best_class = class_value
 
-         rules[value] = best_class
+         c_rules[value] = best_class
             
 
-      n_predictions = 0
+      correctPredict = 0
       for data in dataset:
          var_value = str(data[variable])
-         predicted_class = rules.get(var_value)
+         predicted_class = c_rules.get(var_value)
          actual_class = str(data[class_var])
          if predicted_class == actual_class:
-            n_predictions += 1
+            correctPredict += 1
 
-      accuracy = n_predictions / N
+      accuracy = correctPredict / N
       print(f"Variable: {variable.name}, Accuracy: {accuracy:.2f}")
 
       if accuracy > best_accuracy:
          best_accuracy = accuracy
          best_variable = variable
-         best_rules = rules
       
    print("\nBest variable:", best_variable.name)
    print("Accuracy:", f"{best_accuracy:.2f}")
-   print("Rules:", best_rules)
-
+   
 #_______________________________________________________________________________
 # read a "dataset"
 # the file name (that can be passed in the command line)
@@ -94,8 +110,9 @@ if len( sys.argv ) > 1: fileName = sys.argv[ 1 ]
 
 try:
    dataset = DM.data.Table( fileName )
+   print(dataset)
+   print("\n")
    one_rule(dataset)
-   #print( dataset )
    #print (dataset.domain)
    #print (dataset.domain.variables)
    #print (dataset.domain.attributes)
