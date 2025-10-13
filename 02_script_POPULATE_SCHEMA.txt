@@ -1,3 +1,8 @@
+DELETE FROM amd_PA.APPOINTMENT;
+DELETE FROM amd_PA.PATIENT_DISEASE;
+DELETE FROM amd_PA.DOCTOR;
+DELETE FROM amd_PA.PATIENT;
+
 -- =========================
 -- Populate PATIENT table
 -- =========================
@@ -6,7 +11,14 @@ INSERT INTO amd_PA.PATIENT(nif, name, birthdate) VALUES
 ('987654321', 'Ana Silva', '1980-03-27'),
 ('192837465', 'Mariana Oliveirra', '2005-02-14'),
 ('112233445', 'Pedro Almeida', '1975-07-30'),
-('566778899', 'João Pedro', '1960-09-05');
+('566778899', 'João Pedro', '1960-09-05'),
+('178259148', 'John Smith', '1974-05-18'),
+('147815548', 'Alice Johnson', '1966-07-08'),
+('234101235', 'Bob Williams', '1989-11-01'),
+('210975420', 'Mary Brown', '1984-03-24'),
+('257086210', 'James Davis', '1986-05-18'),
+('217557448', 'David Miller', '1985-10-25'),
+('295431870', 'Susan Wilson', '1978-12-12');
 
 -- =========================
 -- Popular a tabela DISEASE
@@ -23,9 +35,15 @@ INSERT INTO amd_PA.PATIENT_DISEASE(patient_nif, diseaseName) VALUES
 ('123456789', 'myope'),
 ('987654321', 'hypermetrope'),
 ('192837465', 'astigmatic'),
-('112233445', 'myope'),
 ('112233445', 'astigmatic'),
-('566778899', 'hypermetrope');
+('566778899', 'hypermetrope'),
+('178259148', 'myope'),
+('147815548', 'myope'),
+('234101235', 'hypermetrope'),
+('210975420', 'hypermetrope'),
+('257086210', 'hypermetrope'),
+('217557448', 'myope'),
+('295431870', 'myope');
 
 -- =========================
 -- Populate DOCTOR table
@@ -45,4 +63,14 @@ INSERT INTO amd_PA.APPOINTMENT(patient_nif, doctor_id, date, age, astigmatic, te
 ('112233445', 3, '2025-10-13 11:00', 'presbyopic', TRUE, 'reduced', 'hard'),
 ('566778899', 2, '2025-10-14 16:00', 'presbyopic', FALSE, 'normal', 'soft'),
 ('123456789', 2, '2025-10-10 10:00', 'young', FALSE, 'normal', 'soft'),
-('192837465', 3, '2025-10-12 13:00', 'young', TRUE, 'normal', 'soft');
+('192837465', 3, '2025-10-12 13:00', 'young', TRUE, 'normal', 'soft'),
+('178259148', 1, '2025-10-01 10:00', 'young', TRUE, 'normal', 'hard'),
+('147815548', 2, '2025-10-01 10:30', 'young', FALSE, 'normal', 'soft'),
+('234101235', 1, '2025-10-01 11:00', 'young', TRUE, 'reduced', 'none'),
+('210975420', 2, '2025-10-01 11:30', 'young', FALSE, 'normal', 'soft'),
+('257086210', 1, '2025-10-01 12:00', 'young', FALSE, 'reduced', 'none'),
+('217557448', 2, '2025-10-02 09:00', 'presbyopic', TRUE, 'reduced', 'none'),
+('295431870', 1, '2025-10-02 09:30', 'presbyopic', TRUE, 'normal', 'hard');
+
+
+

@@ -1,1 +1,1 @@
-_go 03_script_CREATE_VIEW.sql
+_go 03_script_CREATE_VIEW.txt

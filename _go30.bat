@@ -1,1 +1,1 @@
-_go 30_script_EXPORT_DATA.sql
+_go 30_script_EXPORT_DATA.txt

@@ -1,1 +1,1 @@
-_go 02_script_POPULATE_SCHEMA.sql
+_go 02_script_POPULATE_SCHEMA.txt
