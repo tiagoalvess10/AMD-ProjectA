@@ -1,1 +1,1 @@
-_go 00_script_CREATE_DB.txt
+_go 00_script_CREATE_DB.sql

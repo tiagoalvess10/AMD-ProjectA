@@ -1,1 +1,1 @@
-_go 01_script_CREATE_SCHEMA.txt
+_go 01_script_CREATE_SCHEMA.sql
