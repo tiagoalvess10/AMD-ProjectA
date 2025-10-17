@@ -24,12 +24,11 @@ CREATE OR REPLACE VIEW amd_PA.lenses_view(my_order, age, prescription, astigmati
 SELECT 
 	2 as my_order,
     app.age,
-    pd.diseaseName AS prescription,
+    app.prescription,
     CASE WHEN app.astigmatic THEN 'yes' ELSE 'no' END AS astigmatic,
     app.tear_rate,
     app.lenses
-FROM amd_PA.APPOINTMENT app
-JOIN amd_PA.PATIENT_DISEASE pd ON app.patient_nif = pd.patient_nif;
+FROM amd_PA.APPOINTMENT app;
 
 
 CREATE OR REPLACE VIEW amd_PA.lenses_dataset (age, prescription, astigmatic, tear_rate, lenses) as

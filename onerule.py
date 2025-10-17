@@ -25,6 +25,7 @@
 import sys
 from u01_util import my_print
 import Orange as DM
+import json
 
 """
 Algorithm: One Rule (OneR) manual implementation
@@ -107,27 +108,6 @@ def one_rule(dataset):
 
    return best_variable, best_rules
 
-"""
-Tendo
-"""
-def create_new_patient(dataset):
-   new_patient = {}
-   variable_list = dataset.domain.attributes
-   for variable in variable_list:
-      value = input(f"Enter value for {variable.name} {variable.values}: ")
-      while value not in variable.values:
-         print("Invalid value. Please try again.")
-         value = input(f"Enter value for {variable.name} {variable.values}: ")
-      new_patient[variable.name] = value
-
-   return new_patient
-
-   
-def prevision(new_patient, best_variable, best_rules):
-   var_value = new_patient.get(best_variable.name)
-   predicted_class = best_rules.get(var_value)
-   print(f"O diagnostico do cliente e: {predicted_class}")
-   
 #_______________________________________________________________________________
 # read a "dataset"
 # the file name (that can be passed in the command line)
@@ -140,67 +120,15 @@ try:
    print(dataset)
    print("\n")
    best_variable, best_rules = one_rule(dataset)
-   print("\n")
-   response = input("Deseja prever o diagnostico de um novo paciente? (yes/no)")
-   if response.lower() == 'yes':
-      new_patient = create_new_patient(dataset)
-      prevision(new_patient, best_variable, best_rules)
-   else:
-      print("Ending...")
 
-   #print (dataset.domain)
-   #print (dataset.domain.variables)
-   #print (dataset.domain.attributes)
-   #print("\n\n\n\n\n\n\n\n")
-   #print (dataset.domain.class_var)
-   #print (dir(dataset.domain.class_var))
+   with open("rules.txt","w") as file:
+      file.write("best variable: ")
+      file.write(best_variable.name)
+      file.write("\n")
+      file.write("Rules:\n")
+      json.dump(best_rules, file, indent=4)
    
 except Exception as e:
    my_print(f"--->>> error - cannot open the file: {fileName}\n{e}")
    exit()
 
-
-"""
-#_______________________________________________________________________________
-# variables: name (type = discrete | continuous): [value1, value2, ...]
-# variables, in Orange, refer to features or class
-# cf., http://docs.orange.biolab.si/3/data-mining-library/tutorial/data.html#exploration-of-the-data-domain
-variable_list = dataset.domain.variables
-variable_list = dataset.domain.attributes
-
-my_print( aStr = ">> %d Variables (attributes+class) <<" % len( variable_list ) )
-print( ">> name (type): (value1, value2, ...) <<" )
-
-nDisc=0; nCont=0; nStr=0
-for variable in variable_list:
-   print( ":: %s %s" % ( variable.name, variable.TYPE_HEADERS ), end="" ),
-   if variable.is_discrete:
-      print( ": {0} ".format( variable.values ) )
-      #print( variable.values )
-      nDisc += 1
-   elif variable.is_continuous:
-      print()
-      nCont += 1
-   else:
-      nStr += 1
-my_print( ">> Types: %d discrete, %d continuous <<" % ( nDisc, nCont ) )
-
-
-
-#_______________________________________________________________________________
-# Class: name (type = discrete | continuous): <value1, value2, ...>
-the_class = dataset.domain.class_var
-my_print( ">> Class <<" )
-print( ":: %s %s: %s " % ( the_class.name,
-                           the_class.TYPE_HEADERS,
-                           the_class.values ) )
-
-
-
-#_______________________________________________________________________________
-# First N Instances
-N = 8
-my_print( "First %d instances:" % N )
-for i in range( N ): print( dataset[ i ] )
-
-"""

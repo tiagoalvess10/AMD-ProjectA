@@ -37,6 +37,8 @@ INSERT INTO amd_PA.PATIENT_DISEASE(patient_nif, diseaseName) VALUES
 ('192837465', 'astigmatic'),
 ('112233445', 'astigmatic'),
 ('566778899', 'hypermetrope'),
+('123456789', 'astigmatic'),
+('192837465', 'hypermetrope'),
 ('178259148', 'myope'),
 ('147815548', 'myope'),
 ('234101235', 'hypermetrope'),
@@ -56,21 +58,21 @@ INSERT INTO amd_PA.DOCTOR(name) VALUES
 -- =========================
 -- Populate APPOINTMENT table
 -- =========================
-INSERT INTO amd_PA.APPOINTMENT(patient_nif, doctor_id, date, age, astigmatic, tear_rate, lenses) VALUES
-('123456789', 1, '2024-10-10 10:00', 'young', FALSE, 'normal', 'soft'),
-('987654321', 2, '2025-10-11 14:30', 'pre-presbyopic', FALSE, 'reduced', 'hard'),
-('192837465', 1, '2024-10-12 09:00', 'young', TRUE, 'normal', 'soft'),
-('112233445', 3, '2025-10-13 11:00', 'presbyopic', TRUE, 'reduced', 'hard'),
-('566778899', 2, '2025-10-14 16:00', 'presbyopic', FALSE, 'normal', 'soft'),
-('123456789', 2, '2025-10-10 10:00', 'young', FALSE, 'normal', 'soft'),
-('192837465', 3, '2025-10-12 13:00', 'young', TRUE, 'normal', 'soft'),
-('178259148', 1, '2025-10-01 10:00', 'young', TRUE, 'normal', 'hard'),
-('147815548', 2, '2025-10-01 10:30', 'young', FALSE, 'normal', 'soft'),
-('234101235', 1, '2025-10-01 11:00', 'young', TRUE, 'reduced', 'none'),
-('210975420', 2, '2025-10-01 11:30', 'young', FALSE, 'normal', 'soft'),
-('257086210', 1, '2025-10-01 12:00', 'young', FALSE, 'reduced', 'none'),
-('217557448', 2, '2025-10-02 09:00', 'presbyopic', TRUE, 'reduced', 'none'),
-('295431870', 1, '2025-10-02 09:30', 'presbyopic', TRUE, 'normal', 'hard');
+INSERT INTO amd_PA.APPOINTMENT(patient_nif, doctor_id, date, age, prescription, astigmatic, tear_rate, lenses) VALUES
+('123456789', 1, '2024-10-10 10:00', 'young', 'myope' , FALSE, 'normal', 'soft'),
+('987654321', 2, '2025-10-11 14:30', 'pre-presbyopic', 'hypermetrope', FALSE, 'reduced', 'hard'),
+('192837465', 1, '2024-10-12 09:00', 'young', 'astigmatic', TRUE, 'normal', 'soft'),
+('112233445', 3, '2025-10-13 11:00', 'presbyopic', 'astigmatic', TRUE, 'reduced', 'hard'),
+('566778899', 2, '2025-10-14 16:00', 'presbyopic', 'hypermetrope', FALSE, 'normal', 'soft'),
+('123456789', 2, '2025-10-10 10:00', 'young', 'astigmatic', FALSE, 'normal', 'soft'),
+('192837465', 3, '2025-10-12 13:00', 'young', 'hypermetrope', TRUE, 'normal', 'soft'),
+('178259148', 1, '2025-10-01 10:00', 'young', 'myope', TRUE, 'normal', 'hard'),
+('147815548', 2, '2025-10-01 10:30', 'young', 'myope', FALSE, 'normal', 'soft'),
+('234101235', 1, '2025-10-01 11:00', 'young', 'hypermetrope', TRUE, 'reduced', 'none'),
+('210975420', 2, '2025-10-01 11:30', 'young', 'hypermetrope', FALSE, 'normal', 'soft'),
+('257086210', 1, '2025-10-01 12:00', 'young', 'hypermetrope', FALSE, 'reduced', 'none'),
+('217557448', 2, '2025-10-02 09:00', 'presbyopic', 'myope', TRUE, 'reduced', 'none'),
+('295431870', 1, '2025-10-02 09:30', 'presbyopic', 'myope', TRUE, 'normal', 'hard');
 
 
 

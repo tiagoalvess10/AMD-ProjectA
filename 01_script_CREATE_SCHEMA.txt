@@ -36,5 +36,6 @@ CREATE TABLE IF NOT EXISTS amd_PA.APPOINTMENT(
 	CHECK (age IN ('young', 'presbyopic', 'pre-presbyopic')),
 	astigmatic BOOLEAN NOT NULL,
 	tear_rate VARCHAR(7) NOT NULL CHECK (tear_rate IN ('normal', 'reduced')),
-	lenses VARCHAR(4) NOT NULL CHECK (lenses IN ('none', 'soft', 'hard'))	
+	lenses VARCHAR(4) NOT NULL CHECK (lenses IN ('none', 'soft', 'hard')),
+	prescription VARCHAR(12) NOT NULL REFERENCES amd_PA.DISEASE(diseaseName)
 );
