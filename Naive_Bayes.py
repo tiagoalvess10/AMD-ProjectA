@@ -6,17 +6,38 @@ import Orange as DM
 # read a "dataset"
 # the file name (that can be passed in the command line)
 fileName = "./_dataset/d01_lenses.tab"
-#fileName = "./_dataset/adult_sample"
+file_train = "./_dataset/d01_lenses_train.tab"
+file_test = "./_dataset/d01_lenses_test.tab"
 if len( sys.argv ) > 1: fileName = sys.argv[ 1 ]
 
 try:
-    dataset = DM.data.Table( fileName )
+    #dataset = DM.data.Table( fileName )
+    dataset_train = DM.data.Table(file_train)
+    dataset_test = DM.data.Table(file_test)
 
     nb = DM.classification.NaiveBayesLearner()
 
-    classifier = nb(dataset)
+    classifier = nb(dataset_train)
 
-    print(classifier(dataset[0:3], True))
+    class_values = dataset_train.domain.class_var.values
+
+    correct = 0
+
+    for instance in dataset_test:
+        predicted_value = class_values[int(classifier(instance))]
+        actual_value = instance.get_class()
+
+        print(f"Predict = {predicted_value}, Actual = {actual_value}, Correct? -> {predicted_value == actual_value}")
+    
+        if predicted_value == actual_value:
+            correct += 1
+
+    accuracy = correct / len(dataset_test)
+    print(f"\nAccuracy: {accuracy*100:.2f}%")
+
+    #print('\n')
+    #print(classifier(dataset, True)) //Probabilidades, sem o True é o indice da classe que foi predicted
+
 
 except Exception as e:
    my_print(f"--->>> error - cannot open the file: {fileName}\n{e}")

@@ -108,18 +108,45 @@ def one_rule(dataset):
 
    return best_variable, best_rules
 
+def test(best_variable, best_rules, dataset):
+
+   correct = 0
+   for instance in dataset:
+      var_value = str(instance[best_variable])
+      predicted_value = best_rules.get(var_value)
+      actual_value = str(instance[dataset.domain.class_var])
+      print(f"Predict = {predicted_value}, Actual = {actual_value}, Correct? -> {predicted_value == actual_value}")
+
+      if predicted_value == actual_value:
+         correct += 1
+
+   accuracy = correct / len(dataset)
+   print(f"\nAccuracy: {accuracy*100:.2f}%")
+   
+
 #_______________________________________________________________________________
 # read a "dataset"
 # the file name (that can be passed in the command line)
 fileName = "./_dataset/d01_lenses.tab"
-#fileName = "./_dataset/adult_sample"
+file_train = "./_dataset/d01_lenses_train.tab"
+file_test = "./_dataset/d01_lenses_test.tab"
+
 if len( sys.argv ) > 1: fileName = sys.argv[ 1 ]
 
 try:
-   dataset = DM.data.Table( fileName )
-   print(dataset)
-   print("\n")
-   best_variable, best_rules = one_rule(dataset)
+   #dataset = DM.data.Table( file )
+   #print(dataset)
+   #print("\n")
+
+   dataset_train = DM.data.Table(file_train)
+   dataset_test = DM.data.Table(file_test)
+
+
+   print("############### TREINO ################")
+   best_variable, best_rules = one_rule(dataset_train)
+
+   print("\n############### TESTES ################")
+   test(best_variable, best_rules, dataset_test)
 
    with open("rules.txt","w") as file:
       file.write("best variable: ")
@@ -129,6 +156,6 @@ try:
       json.dump(best_rules, file, indent=4)
    
 except Exception as e:
-   my_print(f"--->>> error - cannot open the file: {fileName}\n{e}")
+   my_print(f"--->>> error - cannot open the file \n{e}")
    exit()
 
