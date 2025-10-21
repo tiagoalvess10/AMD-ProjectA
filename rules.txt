@@ -1,6 +1,6 @@
-best variable: prescription
+best variable: astigmatic
 Rules:
 {
-    "hypermetrope": "none",
-    "myope": "hard"
+    "no": "soft",
+    "yes": "none"
 }
