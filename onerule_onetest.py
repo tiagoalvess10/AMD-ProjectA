@@ -27,26 +27,22 @@ from u01_util import my_print
 import Orange as DM
 import json
 from collections import Counter
+
 """
 Algorithm: One Rule (OneR) manual implementation
-Recebe, como parâmetro, um dataset
 
-Primeiro percorre todas as variáveis (atributos) do dataset e, para cada varivel, constroi um dicionrio de frequncias,
-para contar as ocorrências de cada valor da varivel em relação a cada valor da classe.
-No inicio, esse dicionário é inicializado com 0 para todas as combinações possíveis de valores da varivel e da classe.
+Ver a descrição do ficheiro onerule.py
 
-Depois, percorre todas as instâncias do dataset, atualizando o dicionário de frequências com as contagens reais.
+Este código realiza o mesmo processamento do onerule.py, com a diferenca dos datasets utilizados e do numero de vezes que o algoritmo treina e testa.
 
-Em seguida, para cada valor da varivel, determina a classe mais frequente associada a esse valor, construindo assim as regras de classificação.
+Em vez de ter um dataset de treino e teste predefinido, o algoritmo treina com N-1 instancias de um dataset e testa com a instancia que ficou de fora.
+Após isso, realiza o mesmo processo mas com outra instancia de fora.
+Posto isto, este codigo realizei N treinos e testes, sendo N o tamanho do dataset e utilizando sempre para teste uma instancia diferente.
 
-Após isso, conta o numero de previsões corretas feitas pelas regras construídas, utilizando o correctPredict.
+Este processamento é denominado Leave One Out.
 
-Após contar em quantos casos a varivel previu corretamente a classe, calcula a accuracy, isto é, 
-a proporção de previsões corretas em relação ao número total de instâncias.
-
-Por fim, compara a accuracy obtida com a melhor accuracy encontrada até o momento.
-Se a accuracy atual for maior, atualiza a melhor accuracy e armazena a varivel correspondente.
-Assim, teremos a varivel que melhor classifica o dataset com base na accuracy. Essas informações são apresentadas no final.
+Quando acaba um processamento guarda num array as rules, a melhor variavel e a previsão, para que, quando realizar os N processamentos, recolha a informação
+da variavel que foi mais vezes classificada como a melhor, assim como as rules, e faz a media das accuracies, ficando com a accuracy media que é a que será analisada.
 """
 def one_rule(dataset):
    variable_list = dataset.domain.attributes       # attributes para que exclua a class, se fosse varibles incluiria a class
@@ -115,13 +111,13 @@ def test(best_variable, best_rules, dataset):
       var_value = str(instance[best_variable])
       predicted_value = best_rules.get(var_value)
       actual_value = str(instance[dataset.domain.class_var])
-      print(f"Predict = {predicted_value}, Actual = {actual_value}, Correct? -> {predicted_value == actual_value}")
+      #print(f"Predict = {predicted_value}, Actual = {actual_value}, Correct? -> {predicted_value == actual_value}")
 
       if predicted_value == actual_value:
          correct += 1
 
    accuracy = correct / len(dataset)
-   print(f"\nAccuracy: {accuracy*100:.2f}%")
+   #print(f"\nAccuracy: {accuracy*100:.2f}%")
 
    return accuracy
 
@@ -135,7 +131,7 @@ def leave_one_out(dataset):
 
       train_indices = [j for j in range(N) if j != i]
       train_dataset = dataset[train_indices]
-      #print("Train dataset")
+      print("Train dataset")
       #print()
       #print(train_dataset)
       
@@ -161,11 +157,10 @@ def leave_one_out(dataset):
 
    mean_accuracy = sum(accuracies) / N
    variable_counter = Counter(bestVariables)
-   most_common_variable, count = variable_counter.most_common(1)[0]
+   most_common_variable = variable_counter.most_common(1)[0][0]
 
-   # pegar a primeira regra associada a essa variável mais votada
-   index_first_occurrence = bestVariables.index(most_common_variable)
-   most_common_rules = bestRules[index_first_occurrence]
+   index = bestVariables.index(most_common_variable)
+   most_common_rules = bestRules[index]
 
    return mean_accuracy, most_common_variable, most_common_rules
 
@@ -184,13 +179,11 @@ try:
    mean_accuracy, variable, rules = leave_one_out(dataset)
 
    print(f"Mean Accuracy: {mean_accuracy*100:.2f}%")
-   print(f"Most Frequent Best Variable: {variable}")
-   print("Rules:")
+   #print(f"Most Frequent Best Variable: {variable}")
+   #print("Rules:")
    for value, class_value in rules.items():
       print(f"  {value} -> {class_value}")
 
-
-   
    with open("rules.txt","w") as file:
         file.write("best variable: ")
         file.write(variable)

@@ -2,6 +2,13 @@ import sys
 from u01_util import my_print
 import Orange as DM
 
+"""
+Este codigo realiza o algoritmo de classificação ID3 presente no orange framework. Podia ser utilizado o do scikit-learn, mas deu-se preferência a esta biblioteca
+uma vez que estamos a trabalhar com o orange.
+
+Treina e testa com datasets diferentes e apresenta a accuracy do algoritmo
+"""
+
 #_______________________________________________________________________________
 # read a "dataset"
 # the file name (that can be passed in the command line)

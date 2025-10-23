@@ -46,7 +46,10 @@ a proporção de previsões corretas em relação ao número total de instância
 
 Por fim, compara a accuracy obtida com a melhor accuracy encontrada até o momento.
 Se a accuracy atual for maior, atualiza a melhor accuracy e armazena a varivel correspondente.
-Assim, teremos a varivel que melhor classifica o dataset com base na accuracy. Essas informações são apresentadas no final.
+Assim, teremos a varivel que melhor classifica o dataset com base na accuracy.
+Por fim, escreve a melhor variavel e as regras de classificacao num ficheiro para poderem ser posteriormente utilizadas em previsoes
+
+Depois de treinar com um dataset, testa com outro dataset e apresenta a accuracy
 """
 def one_rule(dataset):
    variable_list = dataset.domain.attributes       # attributes para que exclua a class, se fosse varibles incluiria a class

@@ -1,4 +1,16 @@
 import json
+
+"""
+Código para prever o diagnóstico de um novo paciente, utilizando o ficheiro com as regras geradas a partir do treino realizado pelo ficheiro onerule.py ou onerule_onetest.py
+Pede os valores das variaveis, com exceção da classe, e prevê a classe com base nas regras.
+Utiliza a biblioteca json para formatar de JSON para uma string em python para um processamento mais facil
+"""
+
+
+
+"""
+COM DATASET
+"""
 """
 def create_new_patient(dataset):
    new_patient = {}
@@ -13,6 +25,9 @@ def create_new_patient(dataset):
    return new_patient
 """
 
+"""
+SEM DATASET (HARDCODED)
+"""
 def create_new_patient():
     new_patient = {}
     variables_list = {
@@ -20,7 +35,7 @@ def create_new_patient():
         "prescription": ["myope", "hypermetrope", "astigmatic"],
         "astigmatic": ["yes", "no"],
         "tear_rate": ["normal", "reduced"]
-    } #hardcoded se não pudermos passar o dataset
+    }
 
     for variable, values in variables_list.items():
         value = input(f"Enter value for {variable} {values}: ")
@@ -52,7 +67,7 @@ def prevision(new_patient, best_variable, best_rules):
    
 
 
-response = input("Deseja prever o diagnostico de um novo paciente? (yes/no)")
+response = input("Do you want to predict the diagnosis of a new patient? (yes/no)")
 if response.lower() == 'yes':
     #new_patient = create_new_patient(dataset)
     patient_data = create_new_patient()
