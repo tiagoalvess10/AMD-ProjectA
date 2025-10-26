@@ -25,7 +25,7 @@ SELECT
 	2 as my_order,
     app.age,
     app.prescription,
-    CASE WHEN app.astigmatic THEN 'yes' ELSE 'no' END AS astigmatic,
+    app.astigmatic,
     app.tear_rate,
     app.lenses
 FROM amd_PA.APPOINTMENT app;
