@@ -1,28 +1,30 @@
 DELETE FROM amd_PA.APPOINTMENT;
-DELETE FROM amd_PA.PATIENT_DISEASE;
 DELETE FROM amd_PA.DOCTOR;
+DELETE FROM amd_PA.PATIENT_DISEASE;
+DELETE FROM amd_PA.DISEASE;
 DELETE FROM amd_PA.PATIENT;
 
 -- =========================
 -- Populate PATIENT table
 -- =========================
-INSERT INTO amd_PA.PATIENT(nif, name, birthdate) VALUES
-('123456789', 'António José', '1990-03-19'),
-('987654321', 'Ana Silva', '1980-03-27'),
-('192837465', 'Mariana Oliveirra', '2005-02-14'),
-('112233445', 'Pedro Almeida', '1975-07-30'),
-('566778899', 'João Pedro', '1960-09-05'),
-('111111111', 'Pedro João', '2010-10-20'),
-('222222222', 'Manuel José', '2020-10-21'),
-('178259148', 'John Smith', '1974-05-18'),
-('147815548', 'Alice Johnson', '1966-07-08'),
-('234101235', 'Bob Williams', '1989-11-01'),
-('210975420', 'Mary Brown', '1984-03-24'),
-('217557448', 'James Davis', '1986-05-18'),
-('295431870', 'David Miller', '1985-10-25'),
-('333333333', 'Susan Wilson', '1978-12-12'),
-('444444444', 'Miller Anniston', '1985-10-26'),
-('555555555', 'Susan Walfoy', '1978-12-13');
+INSERT INTO amd_PA.PATIENT (nif, name, birthdate, email) VALUES
+('123456789', 'António José', '1990-03-19', 'antoniojose@exemplo.com'),
+('987654321', 'Ana Silva', '1980-03-27', 'anasilva@exemplo.com'),
+('192837465', 'Mariana Oliveira', '2005-02-14', 'marianaoliveira@exemplo.com'),
+('112233445', 'Pedro Almeida', '1975-07-30', 'pedroalmeida@exemplo.com'),
+('566778899', 'João Pedro', '1960-09-05', 'joaopedro@exemplo.com'),
+('111111111', 'Pedro João', '2010-10-20', 'pedrojoao@exemplo.com'),
+('222222222', 'Manuel José', '2020-10-21', 'manueljose@exemplo.com'),
+('178259148', 'John Smith', '1974-05-18', 'johnsmith@exemplo.com'),
+('147815548', 'Alice Johnson', '1966-07-08', 'alicejohnson@exemplo.com'),
+('234101235', 'Bob Williams', '1989-11-01', 'bobwilliams@exemplo.com'),
+('210975420', 'Mary Brown', '1984-03-24', 'marybrown@exemplo.com'),
+('217557448', 'James Davis', '1986-05-18', 'jamesdavis@exemplo.com'),
+('295431870', 'David Miller', '1985-10-25', 'davidmiller@exemplo.com'),
+('333333333', 'Susan Wilson', '1978-12-12', 'susanwilson@exemplo.com'),
+('444444444', 'Miller Anniston', '1985-10-26', 'milleranniston@exemplo.com'),
+('555555555', 'Susan Walfoy', '1978-12-13', 'susanwalfoy@exemplo.com');
+
 
 -- =========================
 -- Popular a tabela DISEASE
@@ -56,10 +58,10 @@ INSERT INTO amd_PA.PATIENT_DISEASE(patient_nif, diseaseName) VALUES
 -- =========================
 -- Populate DOCTOR table
 -- =========================
-INSERT INTO amd_PA.DOCTOR(name) VALUES
-('Dr. Miguel Correia'),
-('Dra. Sofia Costa'),
-('Dra. Marta Sofia');
+INSERT INTO amd_PA.DOCTOR(name, email) VALUES
+('Dr. Miguel Correia', 'miguelcorreia@exemplo.com'),
+('Dra. Sofia Costa', 'sofiacosta@exemplo.com'),
+('Dra. Marta Sofia', 'martasofia@exemplo.com');
 
 -- =========================
 -- Populate APPOINTMENT table
