@@ -173,8 +173,8 @@ def leave_one_out(dataset):
 #_______________________________________________________________________________
 # read a "dataset"
 # the file name (that can be passed in the command line)
-fileName = "./_dataset/d01_lenses.tab"
-#fileName = "./_dataset/dataset.tab"
+#fileName = "./_dataset/d01_lenses.tab"
+fileName = "./_dataset/dataset.tab"
 
 if len( sys.argv ) > 1: fileName = sys.argv[ 1 ]
 
@@ -185,7 +185,7 @@ try:
 
    mean_accuracy, variable, rules = leave_one_out(dataset)
 
-   print(f"Mean Accuracy: {mean_accuracy*100:.2f}%")
+   print(f"Accuracy: {mean_accuracy*100:.2f}%")
    print(f"Most Frequent Best Variable: {variable}")
    #print("Rules:")
    for value, class_value in rules.items():
