@@ -28,6 +28,8 @@ import Orange as DM
 import json
 from collections import Counter
 
+from sklearn.model_selection import LeaveOneOut
+
 """
 Algorithm: One Rule (OneR) manual implementation
 
@@ -127,22 +129,26 @@ def leave_one_out(dataset):
    bestVariables = []
    bestRules = []
 
-   for i in range(N):
+   loo = LeaveOneOut()
+   indices = list(range(N))
+   iteration = 1
 
-      train_indices = [j for j in range(N) if j != i]
-      train_dataset = dataset[train_indices]
-      print("Train dataset")
+   for train_index, test_index in loo.split(indices):
+
+      train_dataset = dataset[train_index]
+      test_dataset = dataset[test_index]
+
+      """
+      #print("Train dataset")
       #print()
       #print(train_dataset)
-      
-      test_dataset = dataset[i:i+1]
       #print("Teste dataset")
       #print()
       #print(test_dataset)
-
       #print()
       #print("end")
       #print()
+      """
 
       best_variable, best_rules = one_rule(train_dataset)
 
@@ -153,7 +159,8 @@ def leave_one_out(dataset):
       bestVariables.append(best_variable.name)
       bestRules.append(best_rules)
 
-      #print(f"Iteracao {i+1}/{N} -> Accuracy: {accuracy:.2f}")
+      #print(f"Iteracao {iteration+1}/{N} -> Accuracy: {(accuracy*100):.2f}%")
+      #iteration = iteration + 1
 
    mean_accuracy = sum(accuracies) / N
    variable_counter = Counter(bestVariables)
@@ -168,6 +175,7 @@ def leave_one_out(dataset):
 # read a "dataset"
 # the file name (that can be passed in the command line)
 fileName = "./_dataset/d01_lenses.tab"
+#fileName = "./_dataset/dataset.tab"
 
 if len( sys.argv ) > 1: fileName = sys.argv[ 1 ]
 
@@ -179,7 +187,7 @@ try:
    mean_accuracy, variable, rules = leave_one_out(dataset)
 
    print(f"Mean Accuracy: {mean_accuracy*100:.2f}%")
-   #print(f"Most Frequent Best Variable: {variable}")
+   print(f"Most Frequent Best Variable: {variable}")
    #print("Rules:")
    for value, class_value in rules.items():
       print(f"  {value} -> {class_value}")
