@@ -153,9 +153,8 @@ def leave_one_out(dataset):
       best_variable, best_rules = one_rule(train_dataset)
 
       accuracy = test(best_variable, best_rules, test_dataset)
-
+      
       accuracies.append(accuracy)
-
       bestVariables.append(best_variable.name)
       bestRules.append(best_rules)
 
