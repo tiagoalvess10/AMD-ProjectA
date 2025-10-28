@@ -14,10 +14,10 @@ Treina e testa com datasets diferentes e apresenta a accuracy do algoritmo
 # read a "dataset"
 # the file name (that can be passed in the command line)
 #fileName = "./_dataset/d01_lenses.tab"
-#file_train = "./_dataset/d01_lenses_train.tab"
-#file_test = "./_dataset/d01_lenses_test.tab"
-file_train = "./_dataset/dataset_train.tab"
-file_test = "./_dataset/dataset_test.tab"
+file_train = "./_dataset/d01_lenses_train.tab"
+file_test = "./_dataset/d01_lenses_test.tab"
+#file_train = "./_dataset/dataset_train.tab"
+#file_test = "./_dataset/dataset_test.tab"
 
 if len( sys.argv ) > 1: fileName = sys.argv[ 1 ]
 

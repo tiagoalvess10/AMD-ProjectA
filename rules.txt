@@ -1,6 +1,6 @@
-best variable: tear_rate
+best variable: prescription
 Rules:
 {
-    "normal": "soft",
-    "reduced": "none"
+    "hypermetrope": "none",
+    "myope": "hard"
 }

@@ -1,86 +1,54 @@
 import sys
-from u01_util import my_print
-import Orange as DM
-
+import pandas as pd
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import LeaveOneOut
-"""
-Este codigo realiza o algoritmo de classificação ID3 presente no orange framework. Podia ser utilizado o do scikit-learn, mas deu-se preferência a esta biblioteca
-uma vez que estamos a trabalhar com o orange.
-
-Treina e testa com datasets diferentes e apresenta a accuracy do algoritmo
-"""
+from sklearn.metrics import accuracy_score
+from sklearn.preprocessing import LabelEncoder
+import joblib
 
 #_______________________________________________________________________________
-# read a "dataset"
-# the file name (that can be passed in the command line)
+# Lê o dataset
 #fileName = "./_dataset/d01_lenses.tab"
 fileName = "./_dataset/dataset.tab"
-#file_train = "./_dataset/d01_lenses_train.tab"
-#file_test = "./_dataset/d01_lenses_test.tab"
-#file_train = "./_dataset/dataset_train.tab"
-#file_test = "./_dataset/dataset_test.tab"
 
-if len( sys.argv ) > 1: fileName = sys.argv[ 1 ]
+if len(sys.argv) > 1:
+    fileName = sys.argv[1]
 
 try:
-    dataset = DM.data.Table( fileName )
-    
-    N = len(dataset)
-    accuracies = []
+    df = pd.read_csv(fileName, sep='\t', skiprows=[1,2])
+
+    le_dict = {}
+    for col in df.columns:
+        le = LabelEncoder()
+        df[col] = le.fit_transform(df[col])
+        le_dict[col] = le
+
+    X = df.iloc[:, :-1]
+    y = df.iloc[:, -1]
 
     loo = LeaveOneOut()
-    indices = list(range(N))
-    iteration = 1
+    accuracies = []
 
-    tr = DM.classification.TreeLearner()
+    model = DecisionTreeClassifier(criterion="entropy")
 
-    for train_index, test_index in loo.split(indices):
+    for train_index, test_index in loo.split(X):
+        X_train, X_test = X.iloc[train_index], X.iloc[test_index]
+        y_train, y_test = y.iloc[train_index], y.iloc[test_index]
 
-        train_dataset = dataset[train_index]
-        test_dataset = dataset[test_index]
-        
-        """
-        print("Train dataset")
-        print()
-        print(train_dataset)
-        print("Teste dataset")
-        print()
-        print(test_dataset)
-        print()
-        print("end")
-        print()
-        """
-        
+        # Treina o modelo
+        model.fit(X_train, y_train)
 
-        classifier = tr(train_dataset)
+        # Faz a predição
+        y_pred = model.predict(X_test)
 
-        class_values = train_dataset.domain.class_var.values
+        acc = accuracy_score(y_test, y_pred)
+        accuracies.append(acc)
 
-        correct = 0
+    mean_accuracy = sum(accuracies) / len(accuracies)
+    print(f"\nAccuracy: {mean_accuracy * 100:.2f}%")
 
-        for instance in test_dataset:
-            predicted_value = class_values[classifier(instance)]
-            actual_value = instance.get_class()
-
-            #print(f"Predict = {predicted_value}, Actual = {actual_value}, Correct? -> {predicted_value == actual_value}")
-
-            if predicted_value == actual_value:
-                correct += 1
-
-            accuracy = correct / len(test_dataset)
-            #print(f"\nAccuracy: {accuracy*100:.2f}%")
-      
-        accuracies.append(accuracy)
-
-        #print(f"Iteracao {iteration}/{N} -> Accuracy: {(accuracy*100):.2f}%")
-        #iteration = iteration + 1
-
-    mean_accuracy = sum(accuracies) / N
-
-    print(f"\nAccuracy: {mean_accuracy*100:.2f}%")
+    joblib.dump({'model': model, 'encoders': le_dict}, 'rules_ID3.pkl')
 
 except Exception as e:
-   my_print(f"--->>> error - cannot open the file \n{e}")
-   exit()
-
-
+    print(f"--->>> error - cannot open the file \n{e}")
+    exit()
