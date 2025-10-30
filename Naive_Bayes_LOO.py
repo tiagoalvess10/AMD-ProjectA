@@ -47,6 +47,8 @@ try:
     mean_accuracy = sum(accuracies) / len(accuracies)
     print(f"\nAccuracy: {mean_accuracy * 100:.2f}%")
 
+    model.fit(X, y)
+
     joblib.dump({'model': model, 'encoders': le_dict}, 'rules_NB.pkl')
 
 except Exception as e:

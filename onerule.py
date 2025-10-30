@@ -145,7 +145,7 @@ try:
 
    dataset_train = DM.data.Table(file_train)
    dataset_test = DM.data.Table(file_test)
-
+   print(dataset_train)
 
    print("############### TREINO ################")
    best_variable, best_rules = one_rule(dataset_train)
