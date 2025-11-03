@@ -39,12 +39,15 @@ Este código realiza o mesmo processamento do onerule.py, com a diferenca dos da
 
 Em vez de ter um dataset de treino e teste predefinido, o algoritmo treina com N-1 instancias de um dataset e testa com a instancia que ficou de fora.
 Após isso, realiza o mesmo processo mas com outra instancia de fora.
-Posto isto, este codigo realizei N treinos e testes, sendo N o tamanho do dataset e utilizando sempre para teste uma instancia diferente.
+Posto isto, este codigo realiza N treinos e testes, sendo N o tamanho do dataset e utilizando sempre para teste uma instancia diferente.
 
 Este processamento é denominado Leave One Out.
 
 Quando acaba um processamento guarda num array as rules, a melhor variavel e a previsão, para que, quando realizar os N processamentos, recolha a informação
 da variavel que foi mais vezes classificada como a melhor, assim como as rules, e faz a media das accuracies, ficando com a accuracy media que é a que será analisada.
+
+Este código, para cada treino, guarda a variavel, as regras e a accuracy, para no fim ser guardado num ficheiro a variavel que foi escolhida mais vezes,
+assim como as respetivas regras
 """
 def one_rule(dataset):
    variable_list = dataset.domain.attributes       # attributes para que exclua a class, se fosse varibles incluiria a class
@@ -131,7 +134,7 @@ def leave_one_out(dataset):
 
    loo = LeaveOneOut()
    indices = list(range(N))
-   iteration = 1
+   #iteration = 1
 
    for train_index, test_index in loo.split(indices):
 
@@ -163,10 +166,10 @@ def leave_one_out(dataset):
 
    mean_accuracy = sum(accuracies) / N
    variable_counter = Counter(bestVariables)
-   most_common_variable = variable_counter.most_common(1)[0][0]
+   most_common_variable = variable_counter.most_common(1)[0][0] #variavel que foi escolhida mais vezes
 
-   index = bestVariables.index(most_common_variable)
-   most_common_rules = bestRules[index]
+   index = bestVariables.index(most_common_variable) #indice da variavel mais comum
+   most_common_rules = bestRules[index] #rules associadas à variavel mais comum
 
    return mean_accuracy, most_common_variable, most_common_rules
 

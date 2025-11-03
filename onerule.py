@@ -29,10 +29,10 @@ import json
 
 """
 Algorithm: One Rule (OneR) manual implementation
-Recebe, como parâmetro, um dataset
+Recebe, como parâmetro, um dataset, que contém n instancias do dataset original, para treino
 
-Primeiro percorre todas as variáveis (atributos) do dataset e, para cada varivel, constroi um dicionrio de frequncias,
-para contar as ocorrências de cada valor da varivel em relação a cada valor da classe.
+Primeiro percorre todas as variáveis (atributos) do dataset e, para cada varivel, constroi um dicionrio de frequencias,
+para contar as ocorrências de cada valor da variavel em relação a cada valor da classe.
 No inicio, esse dicionário é inicializado com 0 para todas as combinações possíveis de valores da varivel e da classe.
 
 Depois, percorre todas as instâncias do dataset, atualizando o dicionário de frequências com as contagens reais.
@@ -47,9 +47,10 @@ a proporção de previsões corretas em relação ao número total de instância
 Por fim, compara a accuracy obtida com a melhor accuracy encontrada até o momento.
 Se a accuracy atual for maior, atualiza a melhor accuracy e armazena a varivel correspondente.
 Assim, teremos a varivel que melhor classifica o dataset com base na accuracy.
-Por fim, escreve a melhor variavel e as regras de classificacao num ficheiro para poderem ser posteriormente utilizadas em previsoes
 
 Depois de treinar com um dataset, testa com outro dataset e apresenta a accuracy
+
+Por fim, escreve a melhor variavel e as regras de classificacao num ficheiro para poderem ser posteriormente utilizadas em previsoes
 """
 def one_rule(dataset):
    variable_list = dataset.domain.attributes       # attributes para que exclua a class, se fosse varibles incluiria a class
